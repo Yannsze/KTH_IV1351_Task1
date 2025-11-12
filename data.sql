@@ -81,16 +81,10 @@ VALUES
 
 INSERT INTO teaching_activity (factor, activity_name)
 VALUES
-  (1.0, 'Lecture'),
-  (0.5, 'Lab Session'),
-  (0.2, 'Seminar'),
-  (0.8, 'Tutorial'),
-  (0.6, 'Workshop'),
-  (1.0, 'Guest Lecture'),
-  (1.0, 'Field Trip'),
-  (0.9, 'Practical'),
-  (0.1, 'Online Lecture'),
-  (0.7, 'Group Discussion');
+  (3.6, 'Lecture'),
+  (2.4, 'Lab'),
+  (2.4, 'tutorial'),
+  (1.8, 'Seminar');
 
 INSERT INTO employee (employment_id, interest_or_skill_set, salary, person_id, job_title_id, supervisor_or_manager)
 VALUES
@@ -120,12 +114,12 @@ VALUES
   (1, 24, 1),  -- Course 'AL7106', Lecture (24 hours)
   (1, 16, 2),  -- Course 'AL7106', Lab Session (16 hours)
   (2, 20, 1),  -- Course 'OM9831', Lecture (20 hours)
-  (2, 10, 4),  -- Course 'OM9831', Tutorial (10 hours)
+  (2, 10, 1),  -- Course 'OM9831', Tutorial (10 hours)
   (3, 18, 1),  -- Course 'HW1213', Lecture (18 hours)
-  (3, 12, 8),  -- Course 'HW1213', Practical (12 hours)
+  (3, 12, 3),  -- Course 'HW1213', Practical (12 hours)
   (4, 22, 1),  -- Course 'OB4248', Lecture (22 hours)
-  (4, 14, 2),  -- Course 'OB4248', Lab Session (14 hours)
-  (5, 15, 1),  -- Course 'HW4527', Lecture (15 hours)
+  (4, 14, 1),  -- Course 'OB4248', Lab Session (14 hours)
+  (5, 15, 2),  -- Course 'HW4527', Lecture (15 hours)
   (5, 15, 2);  -- Course 'HW4527', Lab Session (15 hours)
 
 UPDATE employee
