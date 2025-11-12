@@ -1,23 +1,10 @@
-CREATE TABLE course_instance (
- course_isntance_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
- instance_id UNIQUE VARCHAR(100) NOT NULL,
- num_students INT NOT NULL,
- study_period VARCHAR(2) NOT NULL,
- study_year INT NOT NULL,
- course_layout_id INT GENERATED ALWAYS AS IDENTITY NOT NULL
-);
-
-ALTER TABLE course_instance ADD CONSTRAINT PK_course_instance PRIMARY KEY (course_isntance_id);
-
-
 CREATE TABLE course_layout (
  course_layout_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
  course_code UNIQUE VARCHAR(50) NOT NULL,
  course_name VARCHAR(100) NOT NULL,
  min_student INT NOT NULL,
  max_student INT NOT NULL,
- hp INT NOT NULL,
- course_isntance_id INT GENERATED ALWAYS AS IDENTITY NOT NULL
+ hp INT NOT NULL
 );
 
 ALTER TABLE course_layout ADD CONSTRAINT PK_course_layout PRIMARY KEY (course_layout_id);
@@ -26,10 +13,24 @@ ALTER TABLE course_layout ADD CONSTRAINT PK_course_layout PRIMARY KEY (course_la
 CREATE TABLE department (
  department_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
  department_name UNIQUE VARCHAR(100) NOT NULL,
- manager VARCHAR(100) NOT NULL
+ manager INT GENERATED ALWAYS AS IDENTITY NOT NULL
 );
 
 ALTER TABLE department ADD CONSTRAINT PK_department PRIMARY KEY (department_id);
+
+
+CREATE TABLE employee (
+ employee_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+ employment_id UNIQUE VARCHAR(10) NOT NULL,
+ interest_or_skill_set VARCHAR(500) NOT NULL,
+ salary INT NOT NULL,
+ person_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+ job_title_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+ supervisor_or_manager INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+ department_id INT GENERATED ALWAYS AS IDENTITY NOT NULL
+);
+
+ALTER TABLE employee ADD CONSTRAINT PK_employee PRIMARY KEY (employee_id);
 
 
 CREATE TABLE job_title (
@@ -68,18 +69,16 @@ CREATE TABLE teaching_activity (
 ALTER TABLE teaching_activity ADD CONSTRAINT PK_teaching_activity PRIMARY KEY (teaching_activity_id);
 
 
-CREATE TABLE employee (
- employee_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
- employment_id UNIQUE VARCHAR(10) NOT NULL,
- interest_or_skill_set VARCHAR(500) NOT NULL,
- salary INT NOT NULL,
- person_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
- job_title_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
- department_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
- supervisor_or_manager INT GENERATED ALWAYS AS IDENTITY NOT NULL
+CREATE TABLE course_instance (
+ course_instance_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+ instance_id UNIQUE VARCHAR(100) NOT NULL,
+ num_students INT NOT NULL,
+ study_period VARCHAR(2) NOT NULL,
+ study_year INT NOT NULL,
+ course_layout_id INT GENERATED ALWAYS AS IDENTITY NOT NULL
 );
 
-ALTER TABLE employee ADD CONSTRAINT PK_employee PRIMARY KEY (employee_id);
+ALTER TABLE course_instance ADD CONSTRAINT PK_course_instance PRIMARY KEY (course_instance_id);
 
 
 CREATE TABLE person_phone (
@@ -91,43 +90,43 @@ ALTER TABLE person_phone ADD CONSTRAINT PK_person_phone PRIMARY KEY (phone_id,pe
 
 
 CREATE TABLE planned_activity (
- course_isntance_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+ course_instance_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
  planned_hours INT NOT NULL,
  teaching_activity_id INT GENERATED ALWAYS AS IDENTITY NOT NULL
 );
 
-ALTER TABLE planned_activity ADD CONSTRAINT PK_planned_activity PRIMARY KEY (course_isntance_id);
+ALTER TABLE planned_activity ADD CONSTRAINT PK_planned_activity PRIMARY KEY (course_instance_id);
 
 
 CREATE TABLE employee_planned_activity (
- employee_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
- course_isntance_id INT GENERATED ALWAYS AS IDENTITY NOT NULL
+ course_instance_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+ employee_id INT GENERATED ALWAYS AS IDENTITY NOT NULL
 );
 
-ALTER TABLE employee_planned_activity ADD CONSTRAINT PK_employee_planned_activity PRIMARY KEY (employee_id,course_isntance_id);
+ALTER TABLE employee_planned_activity ADD CONSTRAINT PK_employee_planned_activity PRIMARY KEY (course_instance_id,employee_id);
 
 
-ALTER TABLE course_instance ADD CONSTRAINT FK_course_instance_0 FOREIGN KEY (course_layout_id) REFERENCES course_layout (course_layout_id);
-
-
-ALTER TABLE course_layout ADD CONSTRAINT FK_course_layout_0 FOREIGN KEY (course_isntance_id) REFERENCES course_instance (course_isntance_id);
+ALTER TABLE department ADD CONSTRAINT FK_department_0 FOREIGN KEY (manager) REFERENCES employee (employee_id);
 
 
 ALTER TABLE employee ADD CONSTRAINT FK_employee_0 FOREIGN KEY (person_id) REFERENCES person (person_id);
 ALTER TABLE employee ADD CONSTRAINT FK_employee_1 FOREIGN KEY (job_title_id) REFERENCES job_title (job_title_id);
-ALTER TABLE employee ADD CONSTRAINT FK_employee_2 FOREIGN KEY (department_id) REFERENCES department (department_id);
-ALTER TABLE employee ADD CONSTRAINT FK_employee_3 FOREIGN KEY (supervisor_or_manager) REFERENCES employee (employee_id);
+ALTER TABLE employee ADD CONSTRAINT FK_employee_2 FOREIGN KEY (supervisor_or_manager) REFERENCES employee (employee_id);
+ALTER TABLE employee ADD CONSTRAINT FK_employee_3 FOREIGN KEY (department_id) REFERENCES department (department_id);
+
+
+ALTER TABLE course_instance ADD CONSTRAINT FK_course_instance_0 FOREIGN KEY (course_layout_id) REFERENCES course_layout (course_layout_id);
 
 
 ALTER TABLE person_phone ADD CONSTRAINT FK_person_phone_0 FOREIGN KEY (phone_id) REFERENCES phone (phone_id);
 ALTER TABLE person_phone ADD CONSTRAINT FK_person_phone_1 FOREIGN KEY (person_id) REFERENCES person (person_id);
 
 
-ALTER TABLE planned_activity ADD CONSTRAINT FK_planned_activity_0 FOREIGN KEY (course_isntance_id) REFERENCES course_instance (course_isntance_id);
+ALTER TABLE planned_activity ADD CONSTRAINT FK_planned_activity_0 FOREIGN KEY (course_instance_id) REFERENCES course_instance (course_instance_id);
 ALTER TABLE planned_activity ADD CONSTRAINT FK_planned_activity_1 FOREIGN KEY (teaching_activity_id) REFERENCES teaching_activity (teaching_activity_id);
 
 
-ALTER TABLE employee_planned_activity ADD CONSTRAINT FK_employee_planned_activity_0 FOREIGN KEY (employee_id) REFERENCES employee (employee_id);
-ALTER TABLE employee_planned_activity ADD CONSTRAINT FK_employee_planned_activity_1 FOREIGN KEY (course_isntance_id) REFERENCES planned_activity (course_isntance_id);
+ALTER TABLE employee_planned_activity ADD CONSTRAINT FK_employee_planned_activity_0 FOREIGN KEY (course_instance_id) REFERENCES planned_activity (course_instance_id);
+ALTER TABLE employee_planned_activity ADD CONSTRAINT FK_employee_planned_activity_1 FOREIGN KEY (employee_id) REFERENCES employee (employee_id);
 
 
