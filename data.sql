@@ -112,7 +112,7 @@ INSERT INTO planned_activity (course_instance_id, planned_hours, teaching_activi
 VALUES
 -- Assigning activities to the first 5 courses
   (1, 24, 1),  -- Course 'AL7106', Lecture (24 hours)
-  (1, 16, 2),  -- Course 'AL7106', Lab Session (16 hours)
+  (1, 16, 2),  -- Course 'AL7106', Lab (16 hours)
   (2, 20, 1),  -- Course 'OM9831', Lecture (20 hours)
   (2, 10, 1),  -- Course 'OM9831', Tutorial (10 hours)
   (3, 18, 1),  -- Course 'HW1213', Lecture (18 hours)
@@ -144,7 +144,7 @@ VALUES
   (3, 2),  -- Planned Activity 3 (Course 2, Lecture) assigned to Employee 2 (Jane Smith, Math)
   (4, 2),  -- Planned Activity 4 (Course 2, Tutorial) assigned to Employee 2 (Jane Smith, Math)
   (5, 5),  -- Planned Activity 5 (Course 3, Lecture) assigned to Employee 5 (Carol White, CS)
-  (6, 4),  -- Planned Activity 6 (Course 3, Practical) assigned to Employee 4 (Bob Brown, EE)
+  (6, 4),  -- Planned Activity 6 (Course 3, Seminar) assigned to Employee 4 (Bob Brown, EE)
   (7, 3),  -- Planned Activity 7 (Course 4, Lecture) assigned to Employee 3 (Alice Johnson, EE)
   (8, 4),  -- Planned Activity 8 (Course 4, Lab) assigned to Employee 4 (Bob Brown, EE)
   (9, 1),  -- Planned Activity 9 (Course 5, Lecture) assigned to Employee 1 (John Doe, CS)
