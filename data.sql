@@ -116,7 +116,7 @@ VALUES
   (2, 20, 1),  -- Course 'OM9831', Lecture (20 hours)
   (2, 10, 4),  -- Course 'OM9831', Tutorial (10 hours)
   (3, 18, 1),  -- Course 'HW1213', Lecture (18 hours)
-  (3, 12, 8),  -- Course 'HW1213', Seminar (12 hours)
+  (3, 12, 3),  -- Course 'HW1213', Seminar (12 hours)
   (4, 22, 1),  -- Course 'OB4248', Lecture (22 hours)
   (4, 14, 2),  -- Course 'OB4248', Lab (14 hours)
   (5, 15, 1),  -- Course 'HW4527', Lecture (15 hours)
