@@ -112,15 +112,15 @@ INSERT INTO planned_activity (course_instance_id, planned_hours, teaching_activi
 VALUES
 -- Assigning activities to the first 5 courses
   (1, 24, 1),  -- Course 'AL7106', Lecture (24 hours)
-  (1, 16, 2),  -- Course 'AL7106', Lab Session (16 hours)
+  (1, 16, 2),  -- Course 'AL7106', Lab (16 hours)
   (2, 20, 1),  -- Course 'OM9831', Lecture (20 hours)
   (2, 10, 4),  -- Course 'OM9831', Tutorial (10 hours)
   (3, 18, 1),  -- Course 'HW1213', Lecture (18 hours)
   (3, 12, 8),  -- Course 'HW1213', Seminar (12 hours)
   (4, 22, 1),  -- Course 'OB4248', Lecture (22 hours)
-  (4, 14, 2),  -- Course 'OB4248', Lab Session (14 hours)
+  (4, 14, 2),  -- Course 'OB4248', Lab (14 hours)
   (5, 15, 1),  -- Course 'HW4527', Lecture (15 hours)
-  (5, 15, 2);  -- Course 'HW4527', Lab Session (15 hours)
+  (5, 15, 2);  -- Course 'HW4527', Lab (15 hours)
 
 UPDATE employee
 SET department_id = CASE employee_id
