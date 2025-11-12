@@ -6,7 +6,7 @@ CREATE TABLE course_layout (
     course_name VARCHAR(100) NOT NULL,
     min_student INT NOT NULL,
     max_student INT NOT NULL,
-    hp INT NOT NULL
+    hp FLOAT NOT NULL
 );
 
 CREATE TABLE department (
