@@ -81,16 +81,10 @@ VALUES
 
 INSERT INTO teaching_activity (factor, activity_name)
 VALUES
-  (1.8, 'Lecture'),
-  (2.5, 'Lab Session'),
-  (3.2, 'Seminar'),
-  (1.8, 'Tutorial'),
-  (2.6, 'Workshop'),
-  (1.0, 'Guest Lecture'),
-  (1.6, 'Field Trip'),
-  (3.9, 'Practical'),
-  (2.1, 'Online Lecture'),
-  (1.7, 'Group Discussion');
+  (3.6, 'Lecture'),
+  (2.4, 'Lab'),
+  (1.8, 'Seminar'),
+  (2.4, 'Tutorial');
 
 INSERT INTO employee (employment_id, interest_or_skill_set, salary, person_id, job_title_id, supervisor_or_manager)
 VALUES
@@ -122,7 +116,7 @@ VALUES
   (2, 20, 1),  -- Course 'OM9831', Lecture (20 hours)
   (2, 10, 4),  -- Course 'OM9831', Tutorial (10 hours)
   (3, 18, 1),  -- Course 'HW1213', Lecture (18 hours)
-  (3, 12, 8),  -- Course 'HW1213', Practical (12 hours)
+  (3, 12, 8),  -- Course 'HW1213', Seminar (12 hours)
   (4, 22, 1),  -- Course 'OB4248', Lecture (22 hours)
   (4, 14, 2),  -- Course 'OB4248', Lab Session (14 hours)
   (5, 15, 1),  -- Course 'HW4527', Lecture (15 hours)
@@ -150,7 +144,7 @@ VALUES
   (3, 2),  -- Planned Activity 3 (Course 2, Lecture) assigned to Employee 2 (Jane Smith, Math)
   (4, 2),  -- Planned Activity 4 (Course 2, Tutorial) assigned to Employee 2 (Jane Smith, Math)
   (5, 5),  -- Planned Activity 5 (Course 3, Lecture) assigned to Employee 5 (Carol White, CS)
-  (6, 4),  -- Planned Activity 6 (Course 3, Practical) assigned to Employee 4 (Bob Brown, EE)
+  (6, 4),  -- Planned Activity 6 (Course 3, Seminar) assigned to Employee 4 (Bob Brown, EE)
   (7, 3),  -- Planned Activity 7 (Course 4, Lecture) assigned to Employee 3 (Alice Johnson, EE)
   (8, 4),  -- Planned Activity 8 (Course 4, Lab) assigned to Employee 4 (Bob Brown, EE)
   (9, 1),  -- Planned Activity 9 (Course 5, Lecture) assigned to Employee 1 (John Doe, CS)
