@@ -81,16 +81,16 @@ VALUES
 
 INSERT INTO teaching_activity (factor, activity_name)
 VALUES
-  (1.0, 'Lecture'),
-  (0.5, 'Lab Session'),
-  (0.2, 'Seminar'),
-  (0.8, 'Tutorial'),
-  (0.6, 'Workshop'),
+  (1.8, 'Lecture'),
+  (2.5, 'Lab Session'),
+  (3.2, 'Seminar'),
+  (1.8, 'Tutorial'),
+  (2.6, 'Workshop'),
   (1.0, 'Guest Lecture'),
-  (1.0, 'Field Trip'),
-  (0.9, 'Practical'),
-  (0.1, 'Online Lecture'),
-  (0.7, 'Group Discussion');
+  (1.6, 'Field Trip'),
+  (3.9, 'Practical'),
+  (2.1, 'Online Lecture'),
+  (1.7, 'Group Discussion');
 
 INSERT INTO employee (employment_id, interest_or_skill_set, salary, person_id, job_title_id, supervisor_or_manager)
 VALUES
