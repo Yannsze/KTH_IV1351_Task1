@@ -1,4 +1,4 @@
-INSERT INTO `course_layout` (`course_code`,`course_name`,`min_student`,`max_student`,`hp`)
+INSERT INTO 'course_layout' ('course_code','course_name','min_student','max_student','hp')
 VALUES
   ("AL7106","Digital design",23,37,7.5),
   ("OM9831","Calculus",24,35,4.5),
@@ -12,7 +12,7 @@ VALUES
   ("GL2258","Advance Economics",21,51,5.5);
 
 
-INSERT INTO `course_instance` (`instance_id`, `num_students`, `study_period`, `study_year`, `course_layout_id`)
+INSERT INTO 'course_instance' ('instance_id', 'num_students', 'study_period', 'study_year', 'course_layout_id')
 VALUES
   ("AL7106ht25", 30, "P1", 2025, 1),
   ("HW1213ht25", 35, "P1", 2025, 3),
@@ -25,7 +25,7 @@ VALUES
   ("QR3473ht25", 32, "P2", 2025, 9),
   ("GL2258ht25", 33, "P2", 2025, 10);
 
-INSERT INTO `job_title` (`job_title`)
+INSERT INTO 'job_title' ('job_title')
 VALUES
   ("Professor"),
   ("Associate Professor"),
@@ -39,7 +39,7 @@ VALUES
   ("Teaching Assistant");
 
 
-INSERT INTO `person` (`personal_number`, `first_name`, `last_name`, `address`)
+INSERT INTO 'person' ('personal_number', 'first_name', 'last_name', 'address')
 VALUES
   ("12345678901", "John", "Doe", "123 Main St, Cityville"),
   ("23456789012", "Jane", "Smith", "456 Oak St, Townsville"),
@@ -52,7 +52,7 @@ VALUES
   ("90123456789", "Grace", "Yellow", "606 Fir St, Coastcity"),
   ("12345678902", "Henry", "Red", "707 Palm St, Hilltop");
 
-INSERT INTO `phone` (`phone_no`)
+INSERT INTO 'phone' ('phone_no')
 VALUES
   ("123-456-7890"),
   ("234-567-8901"),
@@ -65,7 +65,7 @@ VALUES
   ("901-234-5678"),
   ("012-345-6789");
 
-INSERT INTO `person_phone` (`phone_id`, `person_id`)
+INSERT INTO 'person_phone' ('phone_id', 'person_id')
 VALUES
   (1, 1),
   (2, 2),
@@ -79,7 +79,7 @@ VALUES
   (10, 10);
 
 
-INSERT INTO `teaching_activity` (`factor`, `activity_name`)
+INSERT INTO 'teaching_activity' ('factor', 'activity_name')
 VALUES
   (1.0, "Lecture"),
   (0.5, "Lab Session"),
@@ -92,7 +92,7 @@ VALUES
   (0.1, "Online Lecture"),
   (0.7, "Group Discussion");
 
-INSERT INTO `employee` (`employment_id`, `interest_or_skill_set`, `salary`, `person_id`, `job_title_id`, `department_id`, `supervisor_or_manager`)
+INSERT INTO 'employee' ('employment_id', 'interest_or_skill_set', 'salary', 'person_id', 'job_title_id', 'department_id', 'supervisor_or_manager')
 VALUES
   ("1", "Machine Learning, AI", 80000, 1, 1, 1, 2),
   ("2", "Calculus, Analysis", 75000, 2, 2, 2, 3),
@@ -105,7 +105,7 @@ VALUES
   ("9", "Business Strategy, Marketing", 79000, 9, 9, 3, 10),
   ("0", "Legal Studies, Ethics", 82000, 10, 10, 1, 1);
 
-INSERT INTO `employee_planned_activity` (`employee_id`, `course_isntance_id`)
+INSERT INTO 'employee_planned_activity' ('employee_id', 'course_isntance_id')
 VALUES
   (1, 1),
   (2, 2),
@@ -119,7 +119,7 @@ VALUES
   (10, 10);
 
 
-INSERT INTO `department` (`department_name`, `manager`)
+INSERT INTO 'department' ('department_name', 'manager')
 VALUES
   ("Computer Science", 1),
   ("Mathematics", 2),
