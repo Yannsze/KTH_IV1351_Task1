@@ -143,3 +143,15 @@ SET department_id = CASE employee_id
 END
 WHERE employee_id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
+INSERT INTO employee_planned_activity (planned_activity_id, employee_id)
+VALUES
+  (1, 1),  -- Planned Activity 1 (Course 1, Lecture) assigned to Employee 1 (John Doe, CS)
+  (2, 3),  -- Planned Activity 2 (Course 1, Lab) assigned to Employee 3 (Alice Johnson, EE)
+  (3, 2),  -- Planned Activity 3 (Course 2, Lecture) assigned to Employee 2 (Jane Smith, Math)
+  (4, 2),  -- Planned Activity 4 (Course 2, Tutorial) assigned to Employee 2 (Jane Smith, Math)
+  (5, 5),  -- Planned Activity 5 (Course 3, Lecture) assigned to Employee 5 (Carol White, CS)
+  (6, 4),  -- Planned Activity 6 (Course 3, Practical) assigned to Employee 4 (Bob Brown, EE)
+  (7, 3),  -- Planned Activity 7 (Course 4, Lecture) assigned to Employee 3 (Alice Johnson, EE)
+  (8, 4),  -- Planned Activity 8 (Course 4, Lab) assigned to Employee 4 (Bob Brown, EE)
+  (9, 1),  -- Planned Activity 9 (Course 5, Lecture) assigned to Employee 1 (John Doe, CS)
+  (10, 5); -- Planned Activity 10 (Course 5, Lab) assigned to Employee 5 (Carol White, CS)
