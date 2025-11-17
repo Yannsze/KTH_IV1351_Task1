@@ -64,3 +64,53 @@ INSERT INTO employee_planned_activity (planned_activity_id, employee_id) VALUES 
 -- Why Versioning?
 
 --     Reproducibility: If you just changed the HP from 7.5 to 10.0 in the old table, you would change history. A student who took the course in 2020 (when it was 7.5hp) would suddenly look like they took 10.0hp. Your new model preserves historical truth.
+
+
+
+
+
+
+
+-- ============================================================
+-- SCENARIO: Course Layout Changes between Period 1 and Period 2
+-- ============================================================
+
+-- 1. Create the Original Layout (Version 1)
+-- Valid from Jan 1st, 2025. HP is 7.5.
+INSERT INTO course_layout (course_code, course_name, min_student, max_student, hp, valid_from_date)
+VALUES ('IV1351', 'Data Storage Paradigms', 50, 150, 7.5, '2025-01-01');
+
+-- 2. Create the Course Instance for PERIOD 1
+-- We link this to the layout we just created (let's assume it got ID 11 or we select it)
+INSERT INTO course_instance (instance_id, num_students, study_period, study_year, course_layout_id)
+VALUES ('IV1351-P1-2025', 100, 'P1', 2025, 
+    (SELECT course_layout_id FROM course_layout WHERE course_code = 'IV1351' AND hp = 7.5)
+);
+
+-- 3. The University decides to change the course for Period 2.
+-- We Create a NEW Layout (Version 2). 
+-- Valid from June 1st, 2025. HP is changed to 15.0.
+INSERT INTO course_layout (course_code, course_name, min_student, max_student, hp, valid_from_date)
+VALUES ('IV1351', 'Data Storage Paradigms', 50, 150, 15.0, '2025-06-01');
+
+-- 4. Create the Course Instance for PERIOD 2
+-- We link this to the NEW layout (15.0 HP)
+INSERT INTO course_instance (instance_id, num_students, study_period, study_year, course_layout_id)
+VALUES ('IV1351-P2-2025', 120, 'P2', 2025, 
+    (SELECT course_layout_id FROM course_layout WHERE course_code = 'IV1351' AND hp = 15.0)
+);
+
+-- ============================================================
+-- VERIFICATION: Check the results
+-- ============================================================
+
+SELECT 
+    ci.instance_id,
+    ci.study_period,
+    cl.course_code,
+    cl.hp AS credits_awarded,
+    cl.valid_from_date
+FROM course_instance ci
+JOIN course_layout cl ON ci.course_layout_id = cl.course_layout_id
+WHERE cl.course_code = 'IV1351'
+ORDER BY ci.study_period;
