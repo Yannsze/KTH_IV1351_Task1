@@ -18,8 +18,8 @@ DROP TABLE IF EXISTS teaching_activity CASCADE;
 -- 2. Create Tables
 CREATE TABLE course (
     course_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    course_code CHAR(10) UNIQUE NOT NULL,
-    course_name VARCHAR(100) UNIQUE NOT NULL
+    course_code VARCHAR(10) UNIQUE NOT NULL,
+    course_name VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE course_layout (
