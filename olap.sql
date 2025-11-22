@@ -26,7 +26,7 @@ With base AS ( -- temporary calculates stored hours
                 THEN pa.planned_hours * ta.factor ELSE 0 END) AS seminar_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Other Overhead'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
+                THEN pa.planned_hours * ta.factor ELSE 0 END) AS other_overhead_hours
 
     -- inner join 
     FROM course_instance ci
@@ -58,7 +58,7 @@ SELECT -- add derived hours and totals
     ) AS total_hours
 
 FROM base 
-ORDER BY c.course_code, ci.instance_id;
+ORDER BY course_code, course_instance_id;
 
 
 -- Actual allocated hours for a course
