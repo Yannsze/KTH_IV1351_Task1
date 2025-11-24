@@ -1,4 +1,4 @@
--- Planend hours calculations  
+-- 1. Planend hours calculations  
 
 -- Calculate the total hours (with the multiplication factor) along with the break-ups for each activity, 
 -- current years' course instances 
@@ -66,7 +66,7 @@ ORDER BY course_code, course_instance_id;
 
 
 
--- Actual allocated hours for a course
+-- 2. Actual allocated hours for a course
 -- Total allocated hours (with multiplication factors) for a teacher, only for the current years' course instances 
 
 -- CREATE VIEW allocated_hours_course_view AS
@@ -146,7 +146,7 @@ ORDER BY
         teacher_name; 
 
 
--- Total allocated hours for a teacher (only current year's course)
+-- 3. Total allocated hours for a teacher (only current year's course)
 
 -- CREATE VIEW allocated_hours_teacher AS
 SELECT 
@@ -225,7 +225,7 @@ ORDER BY
         ci.instance_id,
         teacher_name; 
 
--- List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
+-- 4. List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
 -- CREATE VIEW allocated_employee_courses_view AS
 SELECT 
         e.employee_id AS employee,
@@ -241,11 +241,11 @@ SELECT
         JOIN study_period sp ON sp.study_period_id = ci.study_period_id
 
 GROUP BY 
-        e.employee,
+        e.employee_id,
         p.first_name,
         p.last_name, 
-        sp.study_period,
-        ci.course_instance
+        sp.study_period_id,
+        ci.course_instance_id
 
 HAVING COUNT(DISTINCT ci.course_instance_id) > 0
 
