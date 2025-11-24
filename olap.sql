@@ -116,22 +116,22 @@ SELECT
                 (2 * hp + 28 + 0.2 * ci.num_students) 
         ) AS total_hours
 
-        FROM course_instance ci
-        JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
-        JOIN course c on c.course_id = cl.course_id
-        JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
-        JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
-        JOIN employee_planned_activity epa ON epa.teaching_activity_id = ta.teaching_activity_id AND epa.course_instance_id = ci.course_instance_id
-        JOIN employee e ON e.employee_id = epa.employee_id
-        JOIN person p ON p.person_id = e.person_id
-        JOIN job_title jt ON jt.job_title_id = e.job_title_id
+FROM course_instance ci
+JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
+JOIN course c on c.course_id = cl.course_id
+JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
+JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
+JOIN employee_planned_activity epa ON epa.teaching_activity_id = ta.teaching_activity_id AND epa.course_instance_id = ci.course_instance_id
+JOIN employee e ON e.employee_id = epa.employee_id
+JOIN person p ON p.person_id = e.person_id
+JOIN job_title jt ON jt.job_title_id = e.job_title_id
 
-        -- Only current year & specific course
-        WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) 
-        AND c.course_code = 'AL7106' -- to show only one course 
+-- Only current year & specific course
+WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) 
+AND c.course_code = 'AL7106' -- to show only one course 
 
-        -- Group
-        GROUP BY
+-- Group
+GROUP BY
         c.course_code, 
         ci.instance_id,
         cl.hp,
@@ -147,14 +147,14 @@ ORDER BY
 
 
 -- Total allocated hours for a teacher (only current year's course)
--- List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
 
+-- CREATE VIEW allocated_hours_teacher AS
 SELECT 
         c.course_code AS course_code,
         ci.instance_id AS course_instance_id,
         cl.hp AS hp,
-        sp.study_period AS study_period, 
-        p.first_name |' '| p.last_name AS teacher_name,
+        sp.study_period_id AS study_period_id, 
+        p.first_name ||' '|| p.last_name AS teacher_name,
 
         -- Sum activity per teacher
         SUM(CASE WHEN ta.activity_name = 'Lecture'
@@ -195,33 +195,61 @@ SELECT
                 (2 * hp + 28 + 0.2 * ci.num_students) 
         ) AS total_hours
 
-        FROM course_instance ci
-        JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
-        JOIN course c on c.course_id = cl.course_id
-        JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
-        JOIN study_period sp ON sp.period_code = ci.period_code
-        JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
-        JOIN employee_planned_activity epa ON epa.teaching_activity_id = ta.teaching_activity_id AND epa.course_instance_id = ci.course_instance_id
-        JOIN employee e ON e.employee_id = epa.employee_id
-        JOIN person p ON p.person_id = e.person_id
+FROM course_instance ci
+JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
+JOIN course c on c.course_id = cl.course_id
+JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
+JOIN study_period sp ON sp.study_period_id = ci.study_period_id
+JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
+JOIN employee_planned_activity epa ON epa.teaching_activity_id = ta.teaching_activity_id AND epa.course_instance_id = ci.course_instance_id
+JOIN employee e ON e.employee_id = epa.employee_id
+JOIN person p ON p.person_id = e.person_id
 
-        -- Only current year & specific teacher
-        WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) 
-        --AND p.first_name = 'AL7106' -- to show only one course 
+-- Only current year & specific teacher
+WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) 
+AND p.first_name = 'Alice' -- to show only one teaaher 
+AND p.last_name = 'Johnson'
 
-        -- Group
-        GROUP BY
+-- Group
+GROUP BY
         c.course_code, 
         ci.instance_id,
         cl.hp,
         p.first_name,
         p.last_name,
-        ci.num_students
+        ci.num_students,
+        sp.study_period_id
 
 ORDER BY 
         c.course_code,
         ci.instance_id,
         teacher_name; 
 
+-- List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
+SELECT 
+        e.employee_id AS employee,
+        p.first_name ||' '|| p.last_name AS teacher_name,
+        sp.study_period_id AS study_period, 
 
+        COUNT(DISTINCT ci.course_instance_id) AS num_courses
 
+        FROM employee e
+        JOIN person p ON p.person_id = e.person_id
+        JOIN employee_planned_activity epa ON epa.employee_id = e.employee_id
+        JOIN course_instance ci ON ci.course_layout_id = epa.course_instance_id
+        JOIN study_period sp ON sp.study_period_id = ci.study_period_id
+
+GROUP BY 
+        e.employee,
+        p.first_name,
+        p.last_name, 
+        sp.study_period,
+        ci.course_instance
+
+HAVING COUNT(DISTINCT ci.course_instance_id) > 1
+
+ORDER BY
+        e.employment_id,
+        teacher_name,
+        sp.study_period_id,
+        num_courses 
