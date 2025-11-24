@@ -3,6 +3,7 @@
 -- Calculate the total hours (with the multiplication factor) along with the break-ups for each activity, 
 -- current years' course instances 
 
+CREATE VIEW planned_hours_calculations_view AS 
 With base AS ( -- temporary calculates stored hours
     SELECT
         -- renaming (AS) for the output
@@ -49,19 +50,24 @@ With base AS ( -- temporary calculates stored hours
 )
 
 SELECT -- add derived hours and totals 
+-- SQL does not allow alias to be used in the same SELECT list
     *, 
     (32 + 0.725 * num_students) AS exam_hours,
     (2 * hp + 28 + 0.2 * num_students) AS admin_hours, 
 
     (
-        lecture_hours + tutorial_hours + lab_hours + seminar_hours + other_overhead_hours, exam_hours, admin_hours
+        lecture_hours + tutorial_hours + lab_hours + seminar_hours + other_overhead_hours + 
+        (32 + 0.725 * num_students) + (2 * hp + 28 + 0.2 * num_students) 
     ) AS total_hours
 
 FROM base 
 ORDER BY course_code, course_instance_id;
+-- Use SELECT * FROM planned_hours_calculations_view; to see the table
+
 
 
 -- Actual allocated hours for a course
+
 
 -- Total allocated hours (with multiplication factors) for a teacher
 -- Only for the current years' course instances 
