@@ -67,12 +67,12 @@ ORDER BY course_code, course_instance_id;
 
 
 -- Actual allocated hours for a course
+-- Total allocated hours (with multiplication factors) for a teacher, only for the current years' course instances 
 
--- Total allocated hours (with multiplication factors) for a teacher
--- Only for the current years' course instances 
+-- CREATE VIEW allocated_hours_course_view AS
 SELECT 
         c.course_code AS course_code,
-        ci.isntance_id AS course_instance_id,
+        ci.instance_id AS course_instance_id,
         cl.hp AS hp,
         p.first_name || ' ' || p.last_name AS teacher_name,
         jt.job_title AS designation,
@@ -92,6 +92,10 @@ SELECT
 
         SUM(CASE WHEN ta.activity_name = 'Other Overhead'
                 THEN pa.planned_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
+
+        -- Derived
+        (32 + 0.725 * ci.num_students) AS exam_hours,
+        (2 * hp + 28 + 0.2 * ci.num_students) AS admin_hours, 
 
         (
                 SUM(CASE WHEN ta.activity_name = 'Lecture'
@@ -122,8 +126,9 @@ SELECT
         JOIN person p ON p.person_id = e.person_id
         JOIN job_title jt ON jt.job_title_id = e.job_title_id
 
-        -- Only current year
-        WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE)
+        -- Only current year & specific course
+        WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) 
+        AND c.course_code = 'AL7106' -- to show only one course 
 
         -- Group
         GROUP BY
@@ -132,7 +137,8 @@ SELECT
         cl.hp,
         p.first_name,
         p.last_name,
-        jt.job_title
+        jt.job_title,
+        ci.num_students
 
 ORDER BY 
         c.course_code,
@@ -140,5 +146,82 @@ ORDER BY
         teacher_name; 
 
 
--- List employee ids & names of all teachers who are allocated in more than a specific number of course
--- instances during current period 
+-- Total allocated hours for a teacher (only current year's course)
+-- List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
+
+SELECT 
+        c.course_code AS course_code,
+        ci.instance_id AS course_instance_id,
+        cl.hp AS hp,
+        sp.study_period AS study_period, 
+        p.first_name |' '| p.last_name AS teacher_name,
+
+        -- Sum activity per teacher
+        SUM(CASE WHEN ta.activity_name = 'Lecture'
+        THEN pa.planned_hours * ta.factor ELSE 0 END) AS lecture_hours,
+
+        SUM(CASE WHEN ta.activity_name = 'Tutorial'
+                THEN pa.planned_hours * ta.factor ELSE 0 END) AS tutorial_hours,
+
+        SUM(CASE WHEN ta.activity_name = 'Lab'
+                THEN pa.planned_hours * ta.factor ELSE 0 END) AS lab_hours,
+
+        SUM(CASE WHEN ta.activity_name = 'Seminar'
+                THEN pa.planned_hours * ta.factor ELSE 0 END) AS seminar_hours,
+
+        SUM(CASE WHEN ta.activity_name = 'Other Overhead'
+                THEN pa.planned_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
+
+        -- Derived
+        (32 + 0.725 * ci.num_students) AS exam_hours,
+        (2 * hp + 28 + 0.2 * ci.num_students) AS admin_hours, 
+
+        (
+                SUM(CASE WHEN ta.activity_name = 'Lecture'
+                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+
+                SUM(CASE WHEN ta.activity_name = 'Tutorial'
+                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+
+                SUM(CASE WHEN ta.activity_name = 'Lab'
+                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+
+                SUM(CASE WHEN ta.activity_name = 'Seminar'
+                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+
+                SUM(CASE WHEN ta.activity_name = 'Other Overhead'
+                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                (32 + 0.725 * ci.num_students) +
+                (2 * hp + 28 + 0.2 * ci.num_students) 
+        ) AS total_hours
+
+        FROM course_instance ci
+        JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
+        JOIN course c on c.course_id = cl.course_id
+        JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
+        JOIN study_period sp ON sp.period_code = ci.period_code
+        JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
+        JOIN employee_planned_activity epa ON epa.teaching_activity_id = ta.teaching_activity_id AND epa.course_instance_id = ci.course_instance_id
+        JOIN employee e ON e.employee_id = epa.employee_id
+        JOIN person p ON p.person_id = e.person_id
+
+        -- Only current year & specific teacher
+        WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) 
+        --AND p.first_name = 'AL7106' -- to show only one course 
+
+        -- Group
+        GROUP BY
+        c.course_code, 
+        ci.instance_id,
+        cl.hp,
+        p.first_name,
+        p.last_name,
+        ci.num_students
+
+ORDER BY 
+        c.course_code,
+        ci.instance_id,
+        teacher_name; 
+
+
+
