@@ -226,6 +226,7 @@ ORDER BY
         teacher_name; 
 
 -- List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
+-- CREATE VIEW allocated_employee_courses_view AS
 SELECT 
         e.employee_id AS employee,
         p.first_name ||' '|| p.last_name AS teacher_name,
@@ -246,7 +247,7 @@ GROUP BY
         sp.study_period,
         ci.course_instance
 
-HAVING COUNT(DISTINCT ci.course_instance_id) > 1
+HAVING COUNT(DISTINCT ci.course_instance_id) > 0
 
 ORDER BY
         e.employment_id,
