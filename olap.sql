@@ -230,9 +230,8 @@ ORDER BY
 -- CREATE VIEW allocated_employee_courses_view AS
 SELECT 
         e.employee_id AS employee,
-        p.first_name ||' '|| p.last_name AS teacher_name,
-        sp.study_period_id AS study_period, 
-        sp.period_code AS period,
+        p.first_name ||' '|| p.last_name AS teacher_name, 
+        sp.period_code AS study_period,
 
         COUNT(DISTINCT ci.course_instance_id) AS num_courses
 
@@ -254,5 +253,5 @@ HAVING COUNT(DISTINCT ci.course_instance_id) > 0
 ORDER BY
         e.employment_id,
         teacher_name,
-        sp.study_period_id,
+        sp.period_code,
         num_courses 
