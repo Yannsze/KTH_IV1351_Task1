@@ -30,6 +30,7 @@ With base AS ( -- temporary calculates stored hours
                 THEN pa.planned_hours * ta.factor ELSE 0 END) AS other_overhead_hours
 
     -- inner join 
+    -- think about what kind of join for different situations ! 
     FROM course_instance ci
     JOIN course_layout cl   ON cl.course_layout_id = ci.course_layout_id
     JOIN course c           ON c.course_id = cl.course_id
@@ -231,6 +232,7 @@ SELECT
         e.employee_id AS employee,
         p.first_name ||' '|| p.last_name AS teacher_name,
         sp.study_period_id AS study_period, 
+        sp.period_code AS period,
 
         COUNT(DISTINCT ci.course_instance_id) AS num_courses
 
@@ -244,7 +246,7 @@ GROUP BY
         e.employee_id,
         p.first_name,
         p.last_name, 
-        sp.study_period_id,
+        sp.period_code,
         ci.course_instance_id
 
 HAVING COUNT(DISTINCT ci.course_instance_id) > 0
