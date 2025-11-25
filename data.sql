@@ -55,7 +55,7 @@ INSERT INTO person_phone (person_id, phone_nr) VALUES
   (9, '901-234-5678'), (10, '012-345-6789');
 
 INSERT INTO teaching_activity (factor, activity_name) VALUES
-  (3.6, 'Lecture'), (2.4, 'Lab'), (2.4, 'tutorial'), (1.8, 'Seminar');
+  (3.6, 'Lecture'), (2.4, 'Lab'), (2.4, 'Tutorial'), (1.8, 'Seminar');
 
 INSERT INTO department (department_name, manager) VALUES
   ('Computer Science', NULL),     
