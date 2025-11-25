@@ -229,29 +229,26 @@ ORDER BY
 -- 4. List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
 -- CREATE VIEW allocated_employee_courses_view AS
 SELECT 
-        e.employee_id AS employee,
-        p.first_name ||' '|| p.last_name AS teacher_name, 
-        sp.period_code AS study_period,
-
-        COUNT(DISTINCT ci.course_instance_id) AS num_courses
-
-        FROM employee e
-        JOIN person p ON p.person_id = e.person_id
-        JOIN employee_planned_activity epa ON epa.employee_id = e.employee_id
-        JOIN course_instance ci ON ci.course_layout_id = epa.course_instance_id
-        JOIN study_period sp ON sp.study_period_id = ci.study_period_id
-
+    e.employee_id AS employee,
+    p.first_name || ' ' || p.last_name AS teacher_name, 
+    sp.period_code AS study_period,
+    COUNT(DISTINCT ci.course_instance_id) AS num_courses
+FROM employee e
+JOIN person p ON p.person_id = e.person_id
+JOIN employee_planned_activity epa ON epa.employee_id = e.employee_id
+-- FIXED JOIN: Join instance ID to instance ID
+JOIN course_instance ci ON ci.course_instance_id = epa.course_instance_id
+JOIN study_period sp ON sp.study_period_id = ci.study_period_id
 GROUP BY 
-        e.employee_id,
-        p.first_name,
-        p.last_name, 
-        sp.period_code,
-        ci.course_instance_id
-
+    e.employee_id,
+    e.employment_id, -- Added to support ordering
+    p.first_name,
+    p.last_name, 
+    sp.period_code
+    -- REMOVED: ci.course_instance_id from here
 HAVING COUNT(DISTINCT ci.course_instance_id) > 0
-
 ORDER BY
-        e.employment_id,
-        teacher_name,
-        sp.period_code,
-        num_courses 
+    e.employment_id,
+    teacher_name,
+    sp.period_code,
+    num_courses;
