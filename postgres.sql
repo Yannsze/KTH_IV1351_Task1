@@ -117,6 +117,7 @@ CREATE TABLE employee_planned_activity (
     employee_id INT NOT NULL,
     teaching_activity_id INT NOT NULL,
     course_instance_id INT NOT NULL,
+    actual_allocated_hours FLOAT(50),
     
     PRIMARY KEY (employee_id, teaching_activity_id, course_instance_id)
 );

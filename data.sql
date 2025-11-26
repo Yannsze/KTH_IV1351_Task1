@@ -124,16 +124,16 @@ VALUES
   (4, 2, 14),
   (5, 2, 15);
 
-INSERT INTO employee_planned_activity (course_instance_id, teaching_activity_id, employee_id)
+INSERT INTO employee_planned_activity (course_instance_id, teaching_activity_id, employee_id,actual_allocated_hours)
 VALUES
-  (1, 1, 1), 
-  (1, 2, 3), 
-  (2, 1, 2),
-  (2, 3, 2), 
-  (3, 1, 2),
-  (4, 1, 3), 
-  (4, 2, 4),
-  (5, 2, 5); 
+  (1, 1, 1, 24), 
+  (1, 2, 3, 16), 
+  (2, 1, 2, 20),
+  (2, 3, 2, 10), 
+  (3, 1, 2, 18),
+  (4, 1, 3, 22), 
+  (4, 2, 4, 14),
+  (5, 2, 5, 15); 
 
 INSERT INTO skill (skill_name) VALUES 
 ('Machine Learning'), ('Calculus'), ('Digital Design'), ('Signal Processing'), 
@@ -142,25 +142,3 @@ INSERT INTO skill (skill_name) VALUES
 INSERT INTO employee_skill (employee_id, skill_id) VALUES 
 (1, 1), (2, 2), (3, 3), (4, 4), (5, 5);
 
--- Adding new Seminar and Tutorial activities to existing instances
-INSERT INTO planned_activity (course_instance_id, teaching_activity_id, planned_hours) VALUES
-  -- Tutorial for Database Systems
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'DB6060ht25'), 3, 12),
-  
-  -- Seminar for Network Security
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'NW7070ht25'), 4, 8),
-
-  -- Seminar for Python P3
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'PY9090P3ht25'), 4, 6);
-
-
--- Assigning teachers to these new activities
-INSERT INTO employee_planned_activity (course_instance_id, teaching_activity_id, employee_id) VALUES
-  -- Steve (TA) assigned to Database Tutorial
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'DB6060ht25'), 3, 19),
-
-  -- Nina (TA) assigned to Network Security Seminar
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'NW7070ht25'), 4, 14),
-
-  -- Laura (Assoc Prof) assigned to Python Seminar
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'PY9090P3ht25'), 4, 12);
