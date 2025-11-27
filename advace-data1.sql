@@ -32,11 +32,11 @@ INSERT INTO planned_activity (course_instance_id, teaching_activity_id, planned_
   (12, 1, 10), 
   (13, 1, 10), 
   (14, 1, 10); 
-INSERT INTO employee_planned_activity (employee_id, teaching_activity_id, course_instance_id) VALUES 
-  (1, 1, 11),
-  (1, 1, 12),
-  (1, 1, 13);
+INSERT INTO employee_planned_activity (employee_id, teaching_activity_id, course_instance_id, actual_allocated_hours) VALUES 
+  (1, 1, 11,10),
+  (1, 1, 12,10),
+  (1, 1, 13,10);
 
 -- Verify: Should recive a error message.
-INSERT INTO employee_planned_activity (employee_id, teaching_activity_id, course_instance_id) VALUES 
-(1, 1, 14);
+INSERT INTO employee_planned_activity (employee_id, teaching_activity_id, course_instance_id, actual_allocated_hours) VALUES 
+(1, 1, 14,10);
