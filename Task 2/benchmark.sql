@@ -8,11 +8,11 @@ WITH base AS (
         cl.hp AS hp,
         sp.period_code AS study_period,
         ci.num_students AS num_students,
-        SUM(CASE WHEN ta.activity_name = 'Lecture' THEN pa.planned_hours * ta.factor ELSE 0 END) AS lecture_hours,
-        SUM(CASE WHEN ta.activity_name = 'Tutorial' THEN pa.planned_hours * ta.factor ELSE 0 END) AS tutorial_hours,
-        SUM(CASE WHEN ta.activity_name = 'Lab' THEN pa.planned_hours * ta.factor ELSE 0 END) AS lab_hours,
-        SUM(CASE WHEN ta.activity_name = 'Seminar' THEN pa.planned_hours * ta.factor ELSE 0 END) AS seminar_hours,
-        SUM(CASE WHEN ta.activity_name = 'Other Overhead' THEN pa.planned_hours * ta.factor ELSE 0 END) AS other_overhead_hours
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Lecture' THEN pa.planned_hours * ta.factor ELSE 0 END)::numeric, 2) AS lecture_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Tutorial' THEN pa.planned_hours * ta.factor ELSE 0 END)::numeric, 2) AS tutorial_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Lab' THEN pa.planned_hours * ta.factor ELSE 0 END)::numeric, 2) AS lab_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Seminar' THEN pa.planned_hours * ta.factor ELSE 0 END)::numeric, 2) AS seminar_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Other Overhead' THEN pa.planned_hours * ta.factor ELSE 0 END)::numeric, 2) AS other_overhead_hours
     FROM course_instance ci
     JOIN course_layout cl   ON cl.course_layout_id = ci.course_layout_id
     JOIN course c           ON c.course_id = cl.course_id
@@ -24,9 +24,9 @@ WITH base AS (
 )
 SELECT 
     *, 
-    (32 + 0.725 * num_students) AS exam_hours,
-    (2 * hp + 28 + 0.2 * num_students) AS admin_hours, 
-    (
+    ROUND((32 + 0.725 * num_students)::numeric, 2) AS exam_hours,
+    ROUND((2 * hp + 28 + 0.2 * num_students)::numeric, 2) AS admin_hours, 
+    ROUND(
         lecture_hours + tutorial_hours + lab_hours + seminar_hours + other_overhead_hours + 
         (32 + 0.725 * num_students) + (2 * hp + 28 + 0.2 * num_students) 
     ) AS total_hours
@@ -42,11 +42,11 @@ SELECT
         cl.hp AS hp,
         p.first_name || ' ' || p.last_name AS teacher_name,
         jt.job_title AS designation,
-        SUM(CASE WHEN ta.activity_name = 'Lecture' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS lecture_hours,
-        SUM(CASE WHEN ta.activity_name = 'Tutorial' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS tutorial_hours,
-        SUM(CASE WHEN ta.activity_name = 'Lab' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS lab_hours,
-        SUM(CASE WHEN ta.activity_name = 'Seminar' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS seminar_hours,
-        SUM(CASE WHEN ta.activity_name = 'Other Overhead' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Lecture' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS lecture_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Tutorial' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS tutorial_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Lab' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS lab_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Seminar' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS seminar_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Other Overhead' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS other_overhead_hours,
         (32 + 0.725 * ci.num_students) AS exam_hours,
         (2 * hp + 28 + 0.2 * ci.num_students) AS admin_hours, 
         (
