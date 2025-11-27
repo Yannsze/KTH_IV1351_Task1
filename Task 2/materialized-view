@@ -2,6 +2,7 @@
 DROP MATERIALIZED VIEW planned_hours_calculations_mv;
 DROP MATERIALIZED VIEW planned_versus_actual_hours_mv;
 
+-- Use REPLACE MATERIALIZED VIEW <name> to refresh the table
 -- Materialized view
 CREATE MATERIALIZED VIEW planned_hours_calculations_mv AS 
 With base AS ( -- temporary calculates stored hours
@@ -30,7 +31,6 @@ With base AS ( -- temporary calculates stored hours
         ROUND(SUM(CASE WHEN ta.activity_name = 'Other Overhead'
                 THEN pa.planned_hours * ta.factor ELSE 0 END)::numeric, 2) AS other_overhead_hours
 
-    -- inner join 
     FROM course_instance ci
     JOIN course_layout cl   ON cl.course_layout_id = ci.course_layout_id
     JOIN course c           ON c.course_id = cl.course_id
