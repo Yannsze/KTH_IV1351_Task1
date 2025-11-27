@@ -1,3 +1,9 @@
+-- DROP tables (for debugging)
+DROP VIEW [planned_hours_calculations_view];
+DROP VIEW [allocated_hours_course_view];
+DROP VIEW [allocated_hours_teacher];
+DROP VIEW [allocated_employee_courses_view];
+
 -- 1. Planend hours calculations  
 
 -- Calculate the total hours (with the multiplication factor) along with the break-ups for each activity, 
@@ -64,7 +70,6 @@ SELECT -- add derived hours and totals
 FROM base 
 ORDER BY course_code, course_instance_id;
 -- Use SELECT * FROM planned_hours_calculations_view; to see the table
-
 
 
 -- 2. Actual allocated hours for a course
@@ -227,7 +232,7 @@ ORDER BY
         teacher_name; 
 
 -- 4. List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
--- CREATE VIEW allocated_employee_courses_view AS
+CREATE VIEW allocated_employee_courses_view AS
 SELECT 
         e.employee_id AS employee,
         p.first_name || ' ' || p.last_name AS teacher_name, 
