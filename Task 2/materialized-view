@@ -1,9 +1,8 @@
--- DROP tables (for debugging)
+-- DROP tables (for resetting up)
 DROP MATERIALIZED VIEW planned_hours_calculations_mv;
-
+DROP MATERIALIZED VIEW planned_versus_actual_hours_mv;
 
 -- Materialized view
-
 CREATE MATERIALIZED VIEW planned_hours_calculations_mv AS 
 With base AS ( -- temporary calculates stored hours
     SELECT
@@ -64,3 +63,39 @@ SELECT -- add derived hours and totals
 
 FROM base 
 ORDER BY course_code, course_instance_id; 
+
+
+CREATE MATERIALIZED VIEW planned_versus_actual_hours_mv AS 
+With planned AS (
+    SELECT 
+        ci.instance_id AS course_instance_id,
+        ROUND(SUM(pa.planned_hours * ta.factor)::numeric, 2) AS planned_hours
+    FROM course_instance ci
+    JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
+    JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
+
+    -- Sum per instance id 
+    GROUP BY 
+    ci.instance_id
+),
+actual AS (
+    SELECT 
+        ci.instance_id AS course_instance_id,
+        ROUND(SUM(epa.actual_allocated_hours * ta.factor)::numeric, 2) AS actual_hours
+    FROM course_instance ci
+    JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
+    JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
+    JOIN employee_planned_activity epa ON epa.course_instance_id = ci.course_instance_id
+
+    GROUP BY 
+    ci.instance_id
+)
+
+SELECT 
+    p.course_instance_id,
+    p.planned_hours,
+    a.actual_hours,
+    ROUND(ABS(a.actual_hours - planned_hours) / p.planned_hours * 100, 2) AS variance_percent
+FROM planned p 
+JOIN actual a ON a.course_instance_id = p.course_instance_id
+WHERE ROUND(ABS(a.actual_hours - p.planned_hours) / p.planned_hours * 100, 2) > 15;
