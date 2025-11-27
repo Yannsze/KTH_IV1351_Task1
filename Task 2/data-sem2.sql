@@ -132,23 +132,23 @@ INSERT INTO planned_activity (course_instance_id, teaching_activity_id, planned_
 -- Scenario: Employee 11 (Kevin) is very busy in Period 1 (Max 4 activities)
 -- =============================================
 
-INSERT INTO employee_planned_activity (course_instance_id, teaching_activity_id, employee_id) VALUES
+INSERT INTO employee_planned_activity (course_instance_id, teaching_activity_id, employee_id, actual_allocated_hours) VALUES
   -- Kevin (ID 11) - Period 1 2025 Workload (4 Activities)
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht25'), 1, 11), -- AI Lecture
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht25'), 4, 11), -- AI Seminar
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'PY9090P1ht25'), 1, 11), -- Python Lecture
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'PY9090P1ht25'), 2, 11), -- Python Lab Supervision
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht25'), 1, 11, 25), -- AI Lecture
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht25'), 4, 11, 21), -- AI Seminar
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'PY9090P1ht25'), 1, 11, 22), -- Python Lecture
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'PY9090P1ht25'), 2, 11, 38), -- Python Lab Supervision
 
   -- Laura (ID 12) - Helping with AI and DB
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht25'), 2, 12), -- AI Lab
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'DB6060ht25'), 1, 12), -- DB Lecture (Period 2)
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht25'), 2, 12, 45), -- AI Lab
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'DB6060ht25'), 1, 12, 28), -- DB Lecture (Period 2)
 
   -- Nina (ID 14 - TA) - Busy with Labs
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht25'), 3, 14), -- AI Tutorial
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'PY9090P1ht25'), 2, 14), -- Python Lab
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht25'), 3, 14, 26), -- AI Tutorial
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'PY9090P1ht25'), 2, 14, 37), -- Python Lab
 
   -- Kevin in 2024 (Past)
-  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht24'), 1, 11);
+  ((SELECT course_instance_id FROM course_instance WHERE instance_id = 'CS5050ht24'), 1, 11, 50);
 
 
 -- =============================================

@@ -80,19 +80,19 @@ SELECT
 
         -- Sum activity per teacher
         SUM(CASE WHEN ta.activity_name = 'Lecture'
-        THEN pa.planned_hours * ta.factor ELSE 0 END) AS lecture_hours,
+        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS lecture_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Tutorial'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS tutorial_hours,
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS tutorial_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Lab'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS lab_hours,
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS lab_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Seminar'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS seminar_hours,
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS seminar_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Other Overhead'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
 
         -- Derived
         (32 + 0.725 * ci.num_students) AS exam_hours,
@@ -100,19 +100,19 @@ SELECT
 
         (
                 SUM(CASE WHEN ta.activity_name = 'Lecture'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
 
                 SUM(CASE WHEN ta.activity_name = 'Tutorial'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
 
                 SUM(CASE WHEN ta.activity_name = 'Lab'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
 
                 SUM(CASE WHEN ta.activity_name = 'Seminar'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
 
                 SUM(CASE WHEN ta.activity_name = 'Other Overhead'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
                 (32 + 0.725 * ci.num_students) +
                 (2 * hp + 28 + 0.2 * ci.num_students) 
         ) AS total_hours
@@ -147,7 +147,7 @@ ORDER BY
         teacher_name; 
 
 
--- 3. Total allocated hours for a teacher (only current year's course)
+-- 3. Total allocated hours for one teacher (only current year's course)
 
 -- CREATE VIEW allocated_hours_teacher AS
 SELECT 
@@ -159,19 +159,19 @@ SELECT
 
         -- Sum activity per teacher
         SUM(CASE WHEN ta.activity_name = 'Lecture'
-        THEN pa.planned_hours * ta.factor ELSE 0 END) AS lecture_hours,
+        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS lecture_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Tutorial'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS tutorial_hours,
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS tutorial_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Lab'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS lab_hours,
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS lab_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Seminar'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS seminar_hours,
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS seminar_hours,
 
         SUM(CASE WHEN ta.activity_name = 'Other Overhead'
-                THEN pa.planned_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
 
         -- Derived
         (32 + 0.725 * ci.num_students) AS exam_hours,
@@ -179,19 +179,19 @@ SELECT
 
         (
                 SUM(CASE WHEN ta.activity_name = 'Lecture'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
 
                 SUM(CASE WHEN ta.activity_name = 'Tutorial'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
 
                 SUM(CASE WHEN ta.activity_name = 'Lab'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
 
                 SUM(CASE WHEN ta.activity_name = 'Seminar'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
 
                 SUM(CASE WHEN ta.activity_name = 'Other Overhead'
-                        THEN pa.planned_hours * ta.factor ELSE 0 END) +
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
                 (32 + 0.725 * ci.num_students) +
                 (2 * hp + 28 + 0.2 * ci.num_students) 
         ) AS total_hours

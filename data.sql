@@ -126,14 +126,14 @@ VALUES
 
 INSERT INTO employee_planned_activity (course_instance_id, teaching_activity_id, employee_id,actual_allocated_hours)
 VALUES
-  (1, 1, 1, 24), 
-  (1, 2, 3, 16), 
-  (2, 1, 2, 20),
-  (2, 3, 2, 10), 
-  (3, 1, 2, 18),
-  (4, 1, 3, 22), 
-  (4, 2, 4, 14),
-  (5, 2, 5, 15); 
+  (1, 1, 1, 20), 
+  (1, 2, 3, 30), 
+  (2, 1, 2, 25),
+  (2, 3, 2, 15), 
+  (3, 1, 2, 20),
+  (4, 1, 3, 21), 
+  (4, 2, 4, 10),
+  (5, 2, 5, 17); 
 
 INSERT INTO skill (skill_name) VALUES 
 ('Machine Learning'), ('Calculus'), ('Digital Design'), ('Signal Processing'), 
