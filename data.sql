@@ -127,7 +127,7 @@ VALUES
 INSERT INTO employee_planned_activity (course_instance_id, teaching_activity_id, employee_id,actual_allocated_hours)
 VALUES
   (1, 1, 1, 20), 
-  (1, 2, 3, 30), 
+  (1, 2, 3, 25), 
   (2, 1, 2, 25),
   (2, 3, 2, 15), 
   (3, 1, 2, 20),
