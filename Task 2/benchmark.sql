@@ -71,7 +71,8 @@ SELECT
 FROM course_instance ci
 JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
 JOIN course c on c.course_id = cl.course_id
-JOIN teaching_activity ta ON 1=1 -- Note: Join logic simplified based on your provided SQL logic for aggregates
+JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
+JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
 JOIN employee_planned_activity epa ON epa.teaching_activity_id = ta.teaching_activity_id AND epa.course_instance_id = ci.course_instance_id
 JOIN employee e ON e.employee_id = epa.employee_id
 JOIN person p ON p.person_id = e.person_id
@@ -96,9 +97,10 @@ SELECT
 FROM course_instance ci
 JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
 JOIN course c on c.course_id = cl.course_id
+JOIN planned_activity pa ON pa.course_instance_id = ci.course_instance_id
 JOIN study_period sp ON sp.study_period_id = ci.study_period_id
-JOIN employee_planned_activity epa ON epa.course_instance_id = ci.course_instance_id
-JOIN teaching_activity ta ON ta.teaching_activity_id = epa.teaching_activity_id
+JOIN teaching_activity ta ON ta.teaching_activity_id = pa.teaching_activity_id
+JOIN employee_planned_activity epa ON epa.teaching_activity_id = ta.teaching_activity_id AND epa.course_instance_id = ci.course_instance_id
 JOIN employee e ON e.employee_id = epa.employee_id
 JOIN person p ON p.person_id = e.person_id
 
@@ -131,11 +133,11 @@ ORDER BY e.employment_id, teacher_name, sp.period_code, num_courses;
 
 -- Materilized benchmark
 -- Planned hours
-EXPLAIN ANALYZE SELECT * FROM mv_planned_hours_calculations;
+EXPLAIN ANALYZE SELECT * FROM allocated_hours_course_view;
 
 -- Test the Indices
 EXPLAIN ANALYZE 
-SELECT * FROM view_actual_allocated_hours 
+SELECT * FROM allocated_hours_course_view 
 WHERE course_code = 'AL7106';
 
 -- Test Overloaded Teachers
