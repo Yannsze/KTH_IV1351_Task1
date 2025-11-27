@@ -158,42 +158,42 @@ SELECT
         p.first_name ||' '|| p.last_name AS teacher_name,
 
         -- Sum activity per teacher
-        SUM(CASE WHEN ta.activity_name = 'Lecture'
-        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS lecture_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Lecture'
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS lecture_hours,
 
-        SUM(CASE WHEN ta.activity_name = 'Tutorial'
-                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS tutorial_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Tutorial'
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS tutorial_hours,
 
-        SUM(CASE WHEN ta.activity_name = 'Lab'
-                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS lab_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Lab'
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS lab_hours,
 
-        SUM(CASE WHEN ta.activity_name = 'Seminar'
-                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS seminar_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Seminar'
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS seminar_hours,
 
-        SUM(CASE WHEN ta.activity_name = 'Other Overhead'
-                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) AS other_overhead_hours,
+        ROUND(SUM(CASE WHEN ta.activity_name = 'Other Overhead'
+                THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS other_overhead_hours,
 
         -- Derived
-        (32 + 0.725 * ci.num_students) AS exam_hours,
-        (2 * hp + 28 + 0.2 * ci.num_students) AS admin_hours, 
+        ROUND((32 + 0.725 * num_students)::numeric, 2) AS exam_hours,
+        ROUND((2 * hp + 28 + 0.2 * num_students)::numeric, 2) AS admin_hours, 
 
         (
-                SUM(CASE WHEN ta.activity_name = 'Lecture'
-                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Lecture'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
 
-                SUM(CASE WHEN ta.activity_name = 'Tutorial'
-                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Tutorial'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
 
-                SUM(CASE WHEN ta.activity_name = 'Lab'
-                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Lab'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
 
-                SUM(CASE WHEN ta.activity_name = 'Seminar'
-                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Seminar'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
 
-                SUM(CASE WHEN ta.activity_name = 'Other Overhead'
-                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END) +
-                (32 + 0.725 * ci.num_students) +
-                (2 * hp + 28 + 0.2 * ci.num_students) 
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Other Overhead'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
+                ROUND((32 + 0.725 * num_students)::numeric, 2) +
+                ROUND((2 * hp + 28 + 0.2 * num_students)::numeric, 2)
         ) AS total_hours
 
 FROM course_instance ci
