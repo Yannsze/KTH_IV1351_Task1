@@ -47,13 +47,27 @@ SELECT
         ROUND(SUM(CASE WHEN ta.activity_name = 'Lab' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS lab_hours,
         ROUND(SUM(CASE WHEN ta.activity_name = 'Seminar' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS seminar_hours,
         ROUND(SUM(CASE WHEN ta.activity_name = 'Other Overhead' THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) AS other_overhead_hours,
-        (32 + 0.725 * ci.num_students) AS exam_hours,
-        (2 * hp + 28 + 0.2 * ci.num_students) AS admin_hours, 
+        ROUND((32 + 0.725 * num_students)::numeric, 2) AS exam_hours,
+        ROUND((2 * hp + 28 + 0.2 * num_students)::numeric, 2) AS admin_hours, 
         (
-                SUM(epa.actual_allocated_hours * ta.factor) +
-                (32 + 0.725 * ci.num_students) +
-                (2 * hp + 28 + 0.2 * ci.num_students) 
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Lecture'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
+
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Tutorial'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
+
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Lab'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
+
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Seminar'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
+
+                ROUND(SUM(CASE WHEN ta.activity_name = 'Other Overhead'
+                        THEN epa.actual_allocated_hours * ta.factor ELSE 0 END)::numeric, 2) +
+                ROUND((32 + 0.725 * num_students)::numeric, 2) +
+                ROUND((2 * hp + 28 + 0.2 * num_students)::numeric, 2)
         ) AS total_hours
+
 FROM course_instance ci
 JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
 JOIN course c on c.course_id = cl.course_id
@@ -62,8 +76,10 @@ JOIN employee_planned_activity epa ON epa.teaching_activity_id = ta.teaching_act
 JOIN employee e ON e.employee_id = epa.employee_id
 JOIN person p ON p.person_id = e.person_id
 JOIN job_title jt ON jt.job_title_id = e.job_title_id
+
 WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) 
 AND c.course_code = 'AL7106' -- This WHERE clause is what the Index will speed up later!
+
 GROUP BY c.course_code, ci.instance_id, cl.hp, p.first_name, p.last_name, jt.job_title, ci.num_students
 ORDER BY c.course_code, ci.instance_id, teacher_name;
 
@@ -76,6 +92,7 @@ SELECT
         sp.period_code AS period_code,
         p.first_name ||' '|| p.last_name AS teacher_name,
         SUM(epa.actual_allocated_hours * ta.factor) AS total_actual_hours
+
 FROM course_instance ci
 JOIN course_layout cl ON cl.course_layout_id = ci.course_layout_id
 JOIN course c on c.course_id = cl.course_id
@@ -84,10 +101,13 @@ JOIN employee_planned_activity epa ON epa.course_instance_id = ci.course_instanc
 JOIN teaching_activity ta ON ta.teaching_activity_id = epa.teaching_activity_id
 JOIN employee e ON e.employee_id = epa.employee_id
 JOIN person p ON p.person_id = e.person_id
+
 WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) 
 AND p.first_name = 'Alice' -- The target for optimization
 AND p.last_name = 'Johnson'
+
 GROUP BY c.course_code, ci.instance_id, cl.hp, p.first_name, p.last_name, ci.num_students, sp.period_code
+
 ORDER BY c.course_code, ci.instance_id, teacher_name;
 
 -- High workload check
@@ -102,8 +122,11 @@ JOIN person p ON p.person_id = e.person_id
 JOIN employee_planned_activity epa ON epa.employee_id = e.employee_id
 JOIN course_instance ci ON ci.course_instance_id = epa.course_instance_id
 JOIN study_period sp ON sp.study_period_id = ci.study_period_id
+
 GROUP BY e.employee_id, e.employment_id, p.first_name, p.last_name, sp.period_code
+
 HAVING COUNT(DISTINCT ci.course_instance_id) > 1 -- Using 1 for test data, or 4 for real scenario
+
 ORDER BY e.employment_id, teacher_name, sp.period_code, num_courses;
 
 -- Materilized benchmark

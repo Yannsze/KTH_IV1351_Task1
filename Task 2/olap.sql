@@ -47,7 +47,7 @@ With base AS ( -- temporary calculates stored hours
     -- only current year's course instances
     WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE)
 
-    -- adds together SUM row
+    -- group together rows in a table that has the same values
     GROUP BY 
         c.course_code,
         ci.instance_id,
@@ -234,28 +234,30 @@ ORDER BY
 -- 4. List employee ids & names of all teachers who are allocated in more than a specific number of course instances during current period 
 CREATE OR REPLACE VIEW allocated_employee_courses_view AS
 SELECT 
-    e.employee_id AS employee,
-    p.first_name || ' ' || p.last_name AS teacher_name, 
-    ci.study_year,
-    sp.period_code AS study_period,
-    COUNT(DISTINCT ci.course_instance_id) AS num_courses
+        e.employee_id AS employee,
+        p.first_name || ' ' || p.last_name AS teacher_name, 
+        ci.study_year,
+        sp.period_code AS study_period,
+        COUNT(DISTINCT ci.course_instance_id) AS num_courses
+
 FROM employee e
 JOIN person p ON p.person_id = e.person_id
 JOIN employee_planned_activity epa ON epa.employee_id = e.employee_id
 JOIN course_instance ci ON ci.course_instance_id = epa.course_instance_id
 JOIN study_period sp ON sp.study_period_id = ci.study_period_id
+
 GROUP BY 
-    e.employee_id,
-    e.employment_id, 
-    p.first_name,
-    p.last_name, 
-    ci.study_year,
-    sp.period_code
+        e.employee_id,
+        e.employment_id, 
+        p.first_name,
+        p.last_name, 
+        ci.study_year,
+        sp.period_code
 HAVING COUNT(DISTINCT ci.course_instance_id) > 0
 ORDER BY
-    e.employment_id,
-    ci.study_year,
-    study_period;
+        e.employment_id,
+        ci.study_year,
+        study_period;
 
 SELECT * FROM allocated_employee_courses_view
 WHERE study_year = 2025 AND study_period IN ('P1', 'P4');
