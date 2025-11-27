@@ -70,7 +70,7 @@ ORDER BY course_code, course_instance_id;
 -- 2. Actual allocated hours for a course
 -- Total allocated hours (with multiplication factors) for a teacher, only for the current years' course instances 
 
--- CREATE VIEW allocated_hours_course_view AS
+CREATE VIEW allocated_hours_course_view AS
 SELECT 
         c.course_code AS course_code,
         ci.instance_id AS course_instance_id,
@@ -149,7 +149,7 @@ ORDER BY
 
 -- 3. Total allocated hours for one teacher (only current year's course)
 
--- CREATE VIEW allocated_hours_teacher AS
+CREATE VIEW allocated_hours_teacher AS
 SELECT 
         c.course_code AS course_code,
         ci.instance_id AS course_instance_id,
