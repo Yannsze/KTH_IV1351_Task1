@@ -1,6 +1,4 @@
--- =============================================
--- STEP 1: New Courses, Layouts, People, and Employees
--- =============================================
+-- This file is just data (since we realized we might want more differnt kinds of data)
 
 -- 1. New Courses
 INSERT INTO course (course_code, course_name) VALUES

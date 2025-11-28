@@ -1,8 +1,8 @@
 -- DROP tables (for debugging)
-DROP VIEW [planned_hours_calculations_view];
-DROP VIEW [allocated_hours_course_view];
-DROP VIEW [allocated_hours_teacher];
-DROP VIEW [allocated_employee_courses_view];
+DROP VIEW IF EXISTS planned_hours_calculations_view;
+DROP VIEW IF EXISTS allocated_hours_course_view;
+DROP VIEW IF EXISTS allocated_hours_teacher_view
+DROP VIEW IF EXISTS allocated_employee_courses_view;
 
 -- 1. Planend hours calculations  
 
@@ -154,7 +154,7 @@ ORDER BY
 
 -- 3. Total allocated hours for one teacher (only current year's course)
 
-CREATE VIEW allocated_hours_teacher AS
+CREATE VIEW allocated_hours_teacher_view AS
 SELECT 
         c.course_code AS course_code,
         ci.instance_id AS course_instance_id,
@@ -246,6 +246,9 @@ JOIN employee_planned_activity epa ON epa.employee_id = e.employee_id
 JOIN course_instance ci ON ci.course_instance_id = epa.course_instance_id
 JOIN study_period sp ON sp.study_period_id = ci.study_period_id
 
+-- show current year and in P1 (if current period)
+WHERE ci.study_year = EXTRACT(YEAR FROM CURRENT_DATE) AND sp.period_code IN ('P1')
+
 GROUP BY 
         e.employee_id,
         e.employment_id, 
@@ -258,6 +261,3 @@ ORDER BY
         e.employment_id,
         ci.study_year,
         study_period;
-
-SELECT * FROM allocated_employee_courses_view
-WHERE study_year = 2025 AND study_period IN ('P1', 'P4');
