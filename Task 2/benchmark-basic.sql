@@ -9,6 +9,9 @@ EXPLAIN ANALYZE SELECT * FROM allocated_hours_course_view;
 -- 3. Teacher load
 EXPLAIN ANALYZE SELECT* FROM allocated_hours_teacher_view;
 
+-- 4. Current period load 
+EXPLAIN ANALYZE SELECT * FROM allocated_employee_courses_view;
+
 -- High workload check
 EXPLAIN ANALYZE
 SELECT 
