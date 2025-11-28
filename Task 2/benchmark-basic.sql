@@ -1,4 +1,4 @@
--- Base analyze with our queries (without materilized view)
+-- Base analyze with our queries (without materilized view nor indices)
 
 -- 1. Planned Hours
 EXPLAIN ANALYZE SELECT * FROM planned_hours_calculations_view;
