@@ -2,6 +2,13 @@
 
 -- Drop if exists to avoid conflicts during testing
 DROP MATERIALIZED VIEW IF EXISTS mv_planned_hours_calculations CASCADE;
+DROP INDEX idx_mv_planned_instance;
+DROP INDEX idx_ci_study_year;
+DROP INDEX idx_course_code;
+DROP INDEX idx_person_name;
+DROP INDEX idx_epa_join;
+DROP INDEX idx_pa_join;
+
 
 CREATE MATERIALIZED VIEW mv_planned_hours_calculations AS 
 With base AS ( 

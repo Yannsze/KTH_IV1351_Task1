@@ -66,6 +66,7 @@ ORDER BY course_code, course_instance_id;
 
 
 CREATE MATERIALIZED VIEW planned_versus_actual_hours_mv AS 
+CREATE VIEW planned_versus_actual_hours_view AS
 With planned AS (
     SELECT 
         ci.instance_id AS course_instance_id,
