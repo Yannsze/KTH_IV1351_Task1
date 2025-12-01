@@ -45,6 +45,7 @@ JOIN course_instance ci ON ci.course_instance_id = epa.course_instance_id
 GROUP BY e.employment_id
 HAVING COUNT(DISTINCT ci.course_instance_id) > 4;
 
+/*
 -- Course instances with planned vs actual variance > 15%
 EXPLAIN ANALYZE
 SELECT 
@@ -64,3 +65,4 @@ JOIN (
     GROUP BY ci.course_instance_id
 ) actuals ON actuals.course_instance_id = mv.course_instance_id
 WHERE ABS(actuals.total_actual_hours - mv.total_planned_hours) / NULLIF(mv.total_planned_hours,0) > 0.15;
+*/
